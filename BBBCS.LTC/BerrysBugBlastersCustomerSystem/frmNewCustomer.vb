@@ -7,7 +7,7 @@ Public Class frmNewCustomer
     Dim nextMonth As Date = DateAdd(DateInterval.Month, 1, Today())
 
     Private Sub frmNewCustomer_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' set date values
+        ' set default date values
         dtpEnrollmentDate.Value = Today()
         dtpNextService.Value = nextMonth
         dtpCardExp.Value = Today()
@@ -15,7 +15,7 @@ Public Class frmNewCustomer
         gatherAccountNumber()
     End Sub
 
-    ' query database for the next available account number
+    ' query database for the next available account number and display in label
     Private Sub gatherAccountNumber()
         Dim returnValue As Integer
         returnValue = CType(CustomerInfoTableAdapter.AccountNumQuery(), Integer)
@@ -24,27 +24,51 @@ Public Class frmNewCustomer
     End Sub
 
     ' validating events
+    Private Sub txtFirstName_Leave(sender As Object, e As EventArgs) Handles txtFirstName.Leave
+        If txtFirstName.Text = "" Then
+            ErrorProvider1.SetError(txtFirstName, "Please enter a first name")
+        Else
+            ErrorProvider1.Clear()
+        End If
+    End Sub
+
+    Private Sub txtLastName_Leave(sender As Object, e As EventArgs) Handles txtLastName.Leave
+        If txtLastName.Text = "" Then
+            ErrorProvider1.SetError(txtLastName, "Please enter a last name")
+        Else
+            ErrorProvider1.Clear()
+        End If
+    End Sub
+
     Private Sub txtPhone_Leave(sender As Object, e As EventArgs) Handles txtPhone.Leave
         If txtPhone.MaskCompleted = False Then
             ErrorProvider1.SetError(txtPhone, "Invalid phone number")
+        Else
+            ErrorProvider1.Clear()
         End If
     End Sub
 
     Private Sub txtZip_Leave(sender As Object, e As EventArgs) Handles txtZip.Leave
         If txtZip.MaskCompleted = False Then
             ErrorProvider1.SetError(txtZip, "Invalid zip code")
+        Else
+            ErrorProvider1.Clear()
         End If
     End Sub
 
     Private Sub txtBillingZip_Leave(sender As Object, e As EventArgs) Handles txtBillingZip.Leave
         If txtBillingZip.MaskCompleted = False Then
             ErrorProvider1.SetError(txtBillingZip, "Invalid billing zip code")
+        Else
+            ErrorProvider1.Clear()
         End If
     End Sub
 
     Private Sub txtCardNumber_Leave(sender As Object, e As EventArgs) Handles txtCardNumber.Leave
         If txtCardNumber.MaskCompleted = False Then
             ErrorProvider1.SetError(txtCardNumber, "Invalid card number")
+        Else
+            ErrorProvider1.Clear()
         End If
     End Sub
 
@@ -91,8 +115,7 @@ Public Class frmNewCustomer
         End If
     End Sub
 
-    ' the submit button is the major sub in this form. It's job is to SET all of the values that
-    ' the user inserted. 
+    ' create a new database record; save all the values the user inserted to the new record
     Private Sub btnSubmit_Click(sender As Object, e As EventArgs) Handles btnSubmit.Click
         Dim zip As Integer
 
@@ -152,7 +175,7 @@ Public Class frmNewCustomer
         End Try
     End Sub
 
-    'a sub to add the customer record to the database
+    ' insert customer record to the database
     Private Sub addRecordToDB()
         Try
             Me.CustomerInfoBindingSource.EndEdit()
@@ -163,15 +186,13 @@ Public Class frmNewCustomer
         End Try
     End Sub
 
-    ' a Sub to clear the contents of the form when the CLEAR button is clicked
+    ' clear the contents of the form
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
         clearForm()
     End Sub
 
-    ' a sub that can be called anytime the form needs to be cleared.
+    ' clear all values in the form and associated variable values
     Private Sub clearForm()
-        ' clear all of the text boxes.
-        ' customer information first
         setFirstName("")
         txtFirstName.Text = getFirstName()
 

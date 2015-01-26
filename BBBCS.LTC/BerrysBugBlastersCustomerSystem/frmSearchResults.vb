@@ -1,8 +1,8 @@
-﻿' form to show search results from the lookup form and allow the user to select a customer record
+﻿' form to show search results from the lookup form and allow the user to select a customer record to view and/or edit
 Public Class frmSearchResults
 
     Private Sub frmSearchResults_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        ' determine which select query to use based on the information entered in the lookup field on the lookup form
+        ' determine which select query to use based on the information user entered in lookup field on lookup form
         ' fill the dgv with query results
         If getLookupCategory() = "accountNumber" Then
             Me.CustomerSearchTableAdapter.FillByAccountNumber(Me.DbCustomerSearch.CustomerInfo, getLookupValInt())

@@ -14,23 +14,21 @@ Public Class frmLookUpCustomer
         End If
     End Sub
 
-    ' when the last name radio button is selected
+    ' change lblLookupOption value based on user selection
     Private Sub rdoLastName_CheckedChanged(sender As Object, e As EventArgs) Handles rdoLastName.CheckedChanged
         lblLookupOption.Text = "Last Name"
     End Sub
 
-    ' when the Account number radio button is selected
     Private Sub rdoAccountNum_CheckedChanged(sender As Object, e As EventArgs) Handles rdoAccountNum.CheckedChanged
         lblLookupOption.Text = "Account Number"
     End Sub
 
-    ' when the Phone number radio button is selected
     Private Sub rdoPhone_CheckedChanged(sender As Object, e As EventArgs) Handles rdoPhone.CheckedChanged
         lblLookupOption.Text = "Phone Number"
     End Sub
 
+    ' reset search options
     Private Sub btnClear_Click(sender As Object, e As EventArgs) Handles btnClear.Click
-        ' clear radio buttons
         rdoPhone.Checked = False
         rdoLastName.Checked = False
         rdoAccountNum.Checked = False
@@ -69,7 +67,7 @@ Public Class frmLookUpCustomer
         enableTextBoxes()
     End Sub
 
-    ' a sub to enable the text boxes and buttons on the look up form
+    ' enable text boxes and buttons on lookup form
     Private Sub enableTextBoxes()
         txtAddressLine1.Enabled = True
         txtAddressLine2.Enabled = True
@@ -91,7 +89,7 @@ Public Class frmLookUpCustomer
         btnSave.Enabled = True
     End Sub
 
-    ' a sub to disable the text boxes and certain buttons on the look up form
+    ' disable text boxes and certain buttons on lookup form
     Private Sub disableTextBoxes()
         btnSave.Enabled = False
         txtAddressLine1.Enabled = False
@@ -118,23 +116,28 @@ Public Class frmLookUpCustomer
     Private Sub txtPhone_Leave(sender As Object, e As EventArgs) Handles txtPhone.Leave
         If txtPhone.MaskCompleted = False Then
             ErrorProvider1.SetError(txtPhone, "Invalid phone number")
+        Else
+            ErrorProvider1.Clear()
         End If
     End Sub
 
     Private Sub txtZip_Leave(sender As Object, e As EventArgs) Handles txtZip.Leave
         If txtZip.MaskCompleted = False Then
             ErrorProvider1.SetError(txtZip, "Invalid zip code")
+        Else
+            ErrorProvider1.Clear()
         End If
     End Sub
 
     Private Sub txtBillingZip_Leave(sender As Object, e As EventArgs) Handles txtBillingZip.Leave
         If txtBillingZip.MaskCompleted = False Then
             ErrorProvider1.SetError(txtBillingZip, "Invalid billing zip code")
+        Else
+            ErrorProvider1.Clear()
         End If
     End Sub
 
-    ' an action listener sub routine that handles the setting of the billing address info
-    ' copying when selected, and clearing when unchecked
+    ' copy address info when selected, and clearing when unchecked
     Private Sub chkSameAddress_CheckedChanged(sender As Object, e As EventArgs) Handles chkSameAddress.CheckedChanged
         If chkSameAddress.Checked Then
             ' calling modules copy function.
